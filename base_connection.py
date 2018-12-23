@@ -1122,7 +1122,6 @@ class BaseConnection(object):
         :param use_textfsm: Process command output through TextFSM template (default: False).
         :type normalize: bool
         """
-        ## add the code for enable enable mode on cisco_ios_telnet
         if self.device_type == "cisco_ios_telnet":
             self.enabletk()           
         
@@ -1303,7 +1302,6 @@ class BaseConnection(object):
                 raise ValueError(msg)
         return output
 
-    # original function for cisco_ios_telnet
     def enabletk(self, cmd='enable', pattern='ssword', re_flags=re.IGNORECASE):
         """Enter enable mode.
 
@@ -1323,7 +1321,7 @@ class BaseConnection(object):
             self.write_channel(self.normalize_cmd(cmd))
             try:
                 output += self.read_until_prompt_or_pattern(pattern=pattern, re_flags=re_flags)
-                self.write_channel(self.normalize_cmd("tk"))
+                self.write_channel(self.normalize_cmd(self.secret))
                 output += self.read_until_prompt()
             except NetMikoTimeoutException:
                 raise ValueError(msg)

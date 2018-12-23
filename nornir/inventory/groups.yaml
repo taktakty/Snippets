@@ -1,0 +1,8 @@
+ios:
+  username: admin
+  password: tk
+  platform: cisco_ios_telnet
+  connection_options:
+    netmiko:
+      extras:
+        secret: tk
