@@ -1123,7 +1123,7 @@ class BaseConnection(object):
         :type normalize: bool
         """
         if self.device_type == "cisco_ios_telnet":
-            self.enabletk()           
+            self.enable(cmd='enable')           
         
         # Time to delay in each read loop
         loop_delay = .2
@@ -1276,33 +1276,6 @@ class BaseConnection(object):
         return check_string in output
 
     def enable(self, cmd='', pattern='ssword', re_flags=re.IGNORECASE):
-        """Enter enable mode.
-
-        :param cmd: Device command to enter enable mode
-        :type cmd: str
-
-        :param pattern: pattern to search for indicating device is waiting for password
-        :type pattern: str
-
-        :param re_flags: Regular expression flags used in conjunction with pattern
-        :type re_flags: int
-        """
-        output = ""
-        msg = "Failed to enter enable mode. Please ensure you pass " \
-              "the 'secret' argument to ConnectHandler."
-        if not self.check_enable_mode():
-            self.write_channel(self.normalize_cmd(cmd))
-            try:
-                output += self.read_until_prompt_or_pattern(pattern=pattern, re_flags=re_flags)
-                self.write_channel(self.normalize_cmd(self.secret))
-                output += self.read_until_prompt()
-            except NetMikoTimeoutException:
-                raise ValueError(msg)
-            if not self.check_enable_mode():
-                raise ValueError(msg)
-        return output
-
-    def enabletk(self, cmd='enable', pattern='ssword', re_flags=re.IGNORECASE):
         """Enter enable mode.
 
         :param cmd: Device command to enter enable mode
